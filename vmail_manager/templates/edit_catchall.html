@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Alias bearbeiten{% endblock %}
+
+{% block main %}
+
+{% call components.form_container() %}
+	<form method="POST" action="">
+		{{ form.csrf_token }}
+		{{ components.input(form.source_domain, disabled=True) }}
+		{{ components.input(form.destination_username) }}
+		{{ components.input(form.destination_domain, disabled=True) }}
+		{{ components.check(form.enabled) }}
+		{{ components.submit('Speichern') }}
+	</form>
+{% endcall %}
+{% endblock %}

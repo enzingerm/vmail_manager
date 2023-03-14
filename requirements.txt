@@ -1,0 +1,7 @@
+Flask==2.2.3
+flask-ldap3-login==0.9.18
+Flask-Login==0.6.2
+Flask-SQLAlchemy==3.0.3
+Flask-WTF==1.1.1
+mysqlclient==2.1.1
+PyYAML==6.0

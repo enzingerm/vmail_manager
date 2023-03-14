@@ -1,0 +1,68 @@
+{% macro accordion_element(parent_id, id, title, open=False) -%}
+<div class="accordion-item">
+    <h2 class="accordion-header" id="heading{{ id }}">
+      <button class="accordion-button{{ '' if open else ' collapsed' }}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ id }}" aria-expanded="{{ 'true' if open else 'false' }}" aria-controls="collapse{{ id }}">
+		{{ title }}
+      </button>
+    </h2>
+    <div id="collapse{{ id }}" class="accordion-collapse collapse{{ ' show' if open else '' }}" aria-labelledby="heading{{ id }}" data-bs-parent="#accordion{{ parent_id }}">
+      <div class="accordion-body">
+		    {{ caller() }}
+      </div>
+    </div>
+  </div>
+{%- endmacro %}
+
+{% macro alert(type, text) -%}
+<div class="alert alert-{{ type }}" role="alert">
+    {{ text }}
+</div>
+{%- endmacro %}
+
+{% macro form_container(form=None) -%}
+  {% if form %}
+    <div>
+    {% if form.form_errors %}
+        {% for e in form.form_errors %}
+            {{ alert('danger', e) }}
+        {% endfor %}
+    {% endif %}
+    {% if form.csrf_token.errors %}
+        {{ alert('warning', 'CSRF-Fehler, bitte erneut versuchen!') }}
+    {% endif %}
+    </div>
+  {% endif %}
+<div style="max-width:40rem">
+    {{ caller() }}
+</div>
+{%- endmacro %}
+
+{% macro input(control, disabled=False, autofocus=False) -%}
+<div class="row mb-3">
+    <div class="col-sm-4">{{ control.label(class_='form-label') }}</div>
+    <div class="col-sm-8">{{ control(class_='form-control' + (' is-invalid' if control.errors else ''), disabled=disabled, autofocus=autofocus) }}
+      {% for e in control.errors %}
+        <div class="invalid-feedback">{{ e }}</div>
+      {% endfor %}
+    </div>
+</div>
+{%- endmacro %}
+
+{% macro check(control, disabled=False) -%}
+<div class="mb-3 form-check">
+    {{ control(class_='form-check-input' + (' is-invalid' if control.errors else ''), disabled=disabled) }}
+    {{ control.label(class_='form-check-label') }}
+</div>
+{%- endmacro %}
+
+{% macro show_check(checked, disabled=True) -%}
+  <input class="form-check-input" type="checkbox"{{' disabled' if disabled else ''}}{{ ' checked' if checked else '' }}>
+{%- endmacro %}
+
+{% macro submit(text='Absenden') -%}
+    <button type="submit" class="btn btn-primary">{{ text }}</button>
+{%- endmacro %}
+
+{% macro button(text, submit=False, type='primary', small=False, large=False) -%}
+  <button {% if submit %}type="submit" {% endif %}class="btn btn-{{ type }}{{ ' btn-sm' if small else ' btn-lg' if large else '' }}">{{ text }}</button>
+{%- endmacro %}

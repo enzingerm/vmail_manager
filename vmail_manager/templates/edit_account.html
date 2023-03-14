@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Account bearbeiten{% endblock %}
+
+{% block main %}
+<h4>{{ account.username }}@{{ account.domain }}</h4>
+<div class="accordion" id="accordionAccount">
+{% call components.accordion_element('Account', 'EditAccount', 'Account bearbeiten', not from_action or from_action in ['edit', 'create'] ) %}
+    {% call components.form_container(form) %}
+		<form method="POST" action="?">
+			{{ form.csrf_token }}
+			{{ components.input(form.username, disabled=True) }}
+			{{ components.input(form.domain, disabled=True) }}
+			{{ components.input(form.quota) }}
+			{{ components.check(form.enabled) }}
+			{{ components.check(form.sendonly) }}
+			{{ components.submit('Speichern') }}
+		</form>
+	{% endcall %}
+{% endcall %}
+{% call components.accordion_element('Account', 'ChangePassword', 'Passwort ändern', from_action == 'pwchange') %}
+	{% call components.form_container() %}
+		<form method="POST" action="{{ url_for('change_password', account=account.id) }}">
+			{{ password_form.csrf_token }}
+			{{ components.input(password_form.password) }}
+			{{ components.input(password_form.confirm_password) }}
+			{{ components.submit('Passwort ändern') }}
+		</form>
+	{% endcall %}
+{% endcall %}
+{% call components.accordion_element('Account', 'CheckPassword', 'Passwort prüfen', from_action == 'pwcheck') %}
+	{% call components.form_container() %}
+		<form method="POST" action="{{ url_for('check_password', account=account.id) }}">
+			{{ check_password_form.csrf_token }}
+			{{ components.input(check_password_form.password) }}
+			{{ components.submit('Prüfen') }}
+		</form>
+	{% endcall %}
+{% endcall %}
+
+</div>
+{% endblock %}

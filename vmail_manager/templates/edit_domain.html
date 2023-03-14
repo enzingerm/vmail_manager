@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ domain.domain }} bearbeiten{% endblock %}
+
+{% block main %}
+<h4 class="mb-3">{{ domain.domain }}</h4>
+<div class="accordion" id="accordionDomain">
+	{% call components.accordion_element('Domain', 'Catchall', 'Catchall', False) %}
+		<p>
+		{% if catchall %}
+		<div class="row">
+			<div class="col-8">
+				{{ catchall.destination_username }}@{{ catchall.destination_domain }}
+				{% if not catchall.enabled %}<span style="color:darkred">inaktiv</span> {% endif %}<br />
+			</div>
+			<div class="col-2">
+				<a href="{{ url_for('edit_catchall', domain=domain.id) }}" title="bearbeiten" class="btn btn-sm btn-primary">
+					<i class="fa-solid fa-pen-to-square"></i>
+				</a>
+			</div>
+			<div class="col-2">
+				<form action="{{ url_for('delete_catchall', domain=domain.id) }}" method="post">
+					<button type="submit" class="btn btn-sm btn-danger" title="löschen">
+						<i class="fa-solid fa-trash-can"></i>
+					</button>
+				</form>
+			</div>
+		</div>
+		{% else %}
+		<a href="{{ url_for('create_catchall', domain=domain.id) }}" class="btn btn-success mb-3">Catchall erstellen</a>
+		{% endif %}
+		</p>
+	{% endcall %}
+	{% call components.accordion_element('Domain', 'Alias', 'Aliasse', False) %}
+		<a href="{{ url_for('add_alias', domain=domain.id) }}" class="btn btn-success mb-3">Alias hinzufügen</a>
+		<div class="table-responsive">
+		<table class="table table-striped">
+		<tr>
+			<th>Alias&nbsp;&nbsp;<span style="font-size:0.9em;color:gray">@{{ domain.domain }}</span></th>
+			<th>Ziel</th>
+			<th>Aktiv</th>
+			<th>Blockiert</th>
+			<th></th>
+			<th></th>
+		</tr>
+		{% for a in aliases %}
+		<tr>
+			<td><span style="font-weight:bold">{{ a.source_username }}</span></td>
+			<td>{{ a.destination_username }}@{{ a.destination_domain}}</td>
+			<td>{{ components.show_check(a.enabled) }}</td>
+			<td>{{ components.show_check(a.blocked) }}</td>
+			<td>
+				<a href="{{ url_for('edit_alias', domain=domain.id, id=a.id) }}" title="bearbeiten" class="btn btn-sm btn-primary">
+					<i class="fa-solid fa-pen-to-square"></i>
+				</a>
+			</td>
+			<td>
+				<form method="POST" action="{{ url_for('delete_alias', alias=a.id) }}">
+					<button type="submit" class="btn btn-sm btn-danger" title="löschen">
+						<i class="fa-solid fa-trash-can"></i>
+					</button>
+				</form>
+			</td>
+			
+		</tr>
+		{% endfor %}
+		</table>
+		</div>
+	{% endcall %}
+	{% call components.accordion_element('Domain', 'Account', 'Accounts', False) %}
+		<a href="{{ url_for('add_account', domain=domain.id) }}" class="btn btn-success mb-3">Account hinzufügen</a>
+		<div class="table-responsive">
+		<table class="table table-striped">
+		<tr>
+			<th>Account</th>
+			<th>Quota</th>
+			<th>Aktiv?</th>
+			<th>Nur senden?</th>
+			<th></th>
+		</tr>
+		{% for a in accounts %}
+		<tr>
+			<td><span style="font-weight:bold">{{ a.username }}</span>@{{ a.domain }}</td>
+			<td>{{ a.quota }}</td>
+			<td>{{ components.show_check(a.enabled) }}</td>
+			<td>{{ components.show_check(a.sendonly) }}</td>
+			<td>
+				<a href="{{ url_for('edit_account', domain=domain.id, account=a.id) }}" title="bearbeiten" class="btn btn-sm btn-primary">
+					<i class="fa-solid fa-pen-to-square"></i>
+				</a>
+			</td>
+		</tr>
+		{% endfor %}
+	    </table>
+		</div>
+	{% endcall %}
+</div>
+{% endblock %}

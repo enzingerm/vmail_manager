@@ -1,0 +1,8 @@
+__pycache__/
+*.py[cod]
+*$py.class
+# config file
+config.yaml
+
+# wsgi file
+vmail.wsgi

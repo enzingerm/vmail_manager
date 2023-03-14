@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Account erstellen{% endblock %}
+
+{% block main %}
+<h4>Neuen Account erstellen</h4>
+{% call components.form_container(form) %}
+    <form method="POST" action="">
+        {{ form.csrf_token }}
+        {{ components.input(form.username) }}
+        {{ components.input(form.domain, disabled=True) }}
+        {{ components.input(form.quota) }}
+        {{ components.input(form.password) }}
+        {{ components.input(form.confirm_password) }}
+        {{ components.check(form.enabled) }}
+        {{ components.check(form.sendonly) }}
+        {{ components.submit('Erstellen') }}
+    </form>
+{% endcall %}
+
+{% endblock %}

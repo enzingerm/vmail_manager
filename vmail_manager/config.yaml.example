@@ -1,0 +1,51 @@
+# the SQLAlchemy database connection string
+SQLALCHEMY_DATABASE_URI: 'mysql://user:password@localhost/vmail'
+
+# Flask application secret key
+SECRET_KEY: ''
+
+# set this to True if you want to disable authentication/login altogether
+LOGIN_DISABLED: False
+
+# Setup LDAP authentication Configuration Variables. Change these to your own settings.
+# All configuration directives can be found in the documentation.
+
+# Hostname of your LDAP Server
+LDAP_HOST: 'ldap.example.com'
+
+# Base DN of your directory
+LDAP_BASE_DN: 'dc=example,dc=com'
+
+# Users DN to be prepended to the Base DN
+LDAP_USER_DN: 'ou=users'
+
+# Groups DN to be prepended to the Base DN
+LDAP_GROUP_DN: 'ou=groups'
+
+# the attribute identifying group memberships
+LDAP_GROUP_MEMBERS_ATTR: member
+
+# The RDN attribute for your user schema on LDAP
+LDAP_USER_RDN_ATTR: cn
+
+# The Attribute you want users to authenticate to LDAP with.
+LDAP_USER_LOGIN_ATTR: sAMAccountName
+
+# Specifies whether or not groups should be searched for when getting user details. Defaults to True.
+LDAP_SEARCH_FOR_GROUPS: True
+
+# Specifies what scope to search in when searching for a specific user. Defaults to 'LEVEL', which
+# limits search results to objects in the root of your search base. Use 'SUBTREE' to do a
+# recursive search within the search base.
+LDAP_USER_SEARCH_SCOPE: SUBTREE
+
+# The Username to bind to LDAP with
+LDAP_BIND_USER_DN: 'CN=ldapuser,OU=users,DC=example,DC=com'
+
+# The Password to bind to LDAP with
+LDAP_BIND_USER_PASSWORD: ''
+
+# the LDAP group which the user has to be a member of
+# omit this setting or set it to False to allow every authenticated user to manage the mail system
+
+# MAILADMIN_GROUP: mailadmins

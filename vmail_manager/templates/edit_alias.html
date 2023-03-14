@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Alias bearbeiten{% endblock %}
+
+{% block main %}
+<h4 class="mb-3">
+	{% if not alias %}Alias hinzufuegen{% else %}Alias bearbeiten{% endif %}
+</h4>
+{% call components.form_container() %}
+	<form method="POST" action="">
+	{{ form.csrf_token }}
+	{{ components.input(form.source_username, autofocus=True) }}
+	{{ components.input(form.source_domain, disabled=True) }}
+	<div class="row mb-3">
+		<div class="col-sm-4"><label class="form-label">Zieladresse</label></div>
+		<div class="col-sm-8">
+			<div class="input-group">
+				<input type="text" class="form-control{{ ' is-invalid' if form.destination_username.errors else '' }}"
+					placeholder="{{ form.destination_username.label.text }}" 
+					aria-label="{{ form.destination_username.label.text }}"
+					value="{{ form.destination_username.data or '' }}"
+					required id="destination_username" name="destination_username">
+				<span class="input-group-text">@</span>
+				<input type="text" class="form-control{{ ' is-invalid' if form.destination_domain.errors else '' }}"
+					placeholder="{{ form.destination_domain.label.text }}"
+					aria-label="{{ form.destination_domain.label.text }}"
+					value="{{ form.destination_domain.data or '' }}"
+					required id="destination_domain" name="destination_domain">
+			</div>
+			<div class="row">
+				<div class="col-6">
+					{% for e in form.destination_username.errors %}
+						<div style="display:block;" class="invalid-feedback">{{ e }}</div>
+					{% endfor %}
+				</div>
+				<div style="padding-left:1em;" class="col-6">
+					{% for e in form.destination_domain.errors %}
+						<div style="display:block;" class="invalid-feedback">{{ e }}</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	{{ components.check(form.enabled) }}
+	{{ components.check(form.blocked) }}
+	{{ components.submit('Speichern') }}
+	</form>
+{% endcall %}
+{% endblock %}
