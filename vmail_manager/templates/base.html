@@ -16,6 +16,9 @@
         <a class="navbar-brand" href="{{ url_for('start') }}">Mailverwaltung</a>
         <div class="collapse navbar-collapse" id="navbarCollapsable">
           <ul class="navbar-nav me-auto mb-2 mb-md-0">
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('quotas') }}">Quotas</a>
+            </li>
           {% for d in domains %}
             <li class="nav-item">
               <a class="nav-link{{ ' active' if (domain is defined and domain.id == d.id) else '' }}" href="{{ url_for('edit_domain', domain=d.id) }}">{{ d.domain }}</a>

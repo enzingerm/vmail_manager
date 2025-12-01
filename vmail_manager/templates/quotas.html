@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Quota-Übersicht{% endblock %}
+
+{% block main %}
+    <h2>Quota-Ausnutzung (Prozent genutzt/Gesamtspeicherplatz)</h2>
+    {% for d, users in quotas.items() %}
+    <h3>{{ d.domain }}</h3>
+    <ul>
+        {% for u, info in users.items() %}
+        <li {% if info.percent > 80 %}style="color:red"{% endif %}>
+            <a href="{{ url_for('edit_account', domain=d.id, account=u.id) }}">{{ u.username }}</a>: {{ info.percent }}%/{{ info.limit}}MiB
+        </li>
+        {% endfor %}
+    </ul>
+
+    {% endfor %}
+{% endblock %}
