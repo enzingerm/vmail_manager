@@ -11,5 +11,5 @@ def check_pw(password, crypted):
     raise Exception("Hash algorithm not supported!")
 
 def create_hash(password):
-    salt = crypt_r.mksalt(crypt.METHOD_SHA512)
+    salt = crypt_r.mksalt(crypt_r.METHOD_SHA512)
     return SHA512_PRE + crypt_r.crypt(password, salt)
